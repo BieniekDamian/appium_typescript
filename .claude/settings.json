@@ -1,0 +1,27 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(npm test)",
+			"Bash(npm run test:smoke)",
+			"Bash(npm run dump)",
+			"Bash(npm run typecheck)",
+			"Bash(npm run lint)",
+			"Bash(npm run verify)",
+			"Bash(npm run timing:*)",
+			"Bash(npx tsc --noEmit)",
+			"Bash(npx wdio run ./config/wdio.android.conf.ts:*)",
+			"Bash(adb devices)",
+			"Bash(adb shell dumpsys:*)",
+			"Bash(adb shell getprop:*)",
+			"Bash(adb shell pm list packages:*)",
+			"Bash(adb shell cat /proc/meminfo:*)",
+			"Bash(adb shell wm size)",
+			"Bash(adb shell wm density)",
+			"Bash(adb shell uiautomator dump:*)",
+			"Bash(adb exec-out cat /sdcard/ui.xml)",
+			"Bash(adb logcat -d:*)",
+			"Bash(adb logcat -b crash -d:*)",
+			"Bash(emulator -list-avds)"
+		]
+	}
+}

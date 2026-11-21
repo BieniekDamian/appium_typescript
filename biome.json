@@ -1,0 +1,53 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
+	"vcs": { "enabled": false },
+	"files": {
+		"ignoreUnknown": true,
+		"includes": ["config/**", "src/**", "tests/**", "tools/**", "*.json", "!package-lock.json"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 110
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended",
+			"nursery": {
+				"noFloatingPromises": "error",
+				"noMisusedPromises": "error"
+			},
+			"suspicious": {
+				"noFocusedTests": "error",
+				"noSkippedTests": "error",
+				"noExplicitAny": "error"
+			},
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error"
+			},
+			"style": {
+				"useImportType": "error",
+				"useConst": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["tools/**"],
+			"linter": { "rules": { "suspicious": { "noConsole": "off" } } }
+		}
+	],
+	"assist": {
+		"enabled": true,
+		"actions": { "source": { "organizeImports": "on" } }
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"name": "appium_typescript",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Appium mobile E2E tests for the Android app under test (Natively WebView wrapper)",
+	"type": "module",
+	"scripts": {
+		"test": "wdio run ./config/wdio.android.conf.ts",
+		"test:smoke": "wdio run ./config/wdio.android.conf.ts --spec ./tests/smoke.spec.ts",
+		"timing": "node tools/test-timing.mjs",
+		"dump": "wdio run ./config/wdio.android.conf.ts --spec ./tools/dump-screen.spec.ts",
+		"emulator": "emulator -avd Pixel_9",
+		"emulator:stop": "adb emu kill || echo No emulator is running",
+		"emulator:restart": "npm run emulator:stop && node -e \"setTimeout(() => {}, 5000)\" && npm run emulator",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"verify": "npm run typecheck && npm run lint"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.7",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "^26.6.6",
+		"@wdio/appium-service": "^10.1.1",
+		"@wdio/cli": "^10.1.0",
+		"@wdio/globals": "^10.1.0",
+		"@wdio/local-runner": "^10.1.0",
+		"@wdio/mocha-framework": "^10.1.0",
+		"@wdio/spec-reporter": "^10.1.0",
+		"@wdio/types": "^10.1.0",
+		"dotenv": "^18.0.9",
+		"typescript": "^7.0.2",
+		"webdriverio": "^10.1.0"
+	}
+}
