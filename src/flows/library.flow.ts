@@ -1,7 +1,9 @@
+import { askRayScreen } from '../screens/ask-ray.screen.js';
 import { finishProfileScreen } from '../screens/finish-profile.screen.js';
 import { homeScreen } from '../screens/home.screen.js';
 import { type LibraryFilter, libraryScreen } from '../screens/library.screen.js';
 import { navBar } from '../screens/nav-bar.js';
+import { notificationsScreen } from '../screens/notifications.screen.js';
 import { type SearchCategory, searchScreen } from '../screens/search.screen.js';
 import { titleScreen } from '../screens/title.screen.js';
 
@@ -23,19 +25,43 @@ async function dismissFinishProfilePrompt(): Promise<void> {
 			return (
 				(await finishProfileScreen.lookAroundButton.isDisplayed()) ||
 				(await navBar.tab('Home').isDisplayed()) ||
-				(await searchScreen.closeButton.isDisplayed())
+				(await searchScreen.closeButton.isDisplayed()) ||
+				(await notificationsScreen.closeButton.isDisplayed())
 			);
 		},
-		{ timeout: 30_000, interval: 1_000, timeoutMsg: 'No known screen (Home, search, prompt) appeared' },
+		{
+			timeout: 30_000,
+			interval: 1_000,
+			timeoutMsg: 'No known screen (Home, search, notifications, prompt) appeared',
+		},
 	);
 	if (await finishProfileScreen.lookAroundButton.isDisplayed()) {
 		await finishProfileScreen.lookAround();
 	}
 }
 
-/** Leaves whatever screen the app is on (prompt, title page, search panel) and lands on Home. */
+/**
+ * Closes overlays that cover the bottom nav. The app ignores the system Back button, so each one
+ * needs its own close control; an overlay left open by a failed test would otherwise block every
+ * later spec (they all share one session).
+ */
+async function closeOverlays(): Promise<void> {
+	if (await notificationsScreen.closeButton.isDisplayed()) {
+		await notificationsScreen.close();
+	}
+	if (await askRayScreen.historyIntro.isDisplayed()) {
+		await askRayScreen.closeHistory();
+	}
+}
+
+/**
+ * Leaves whatever screen the app is on (prompt, overlays, title page, search panel) and lands on
+ * Home. Tabs such as Discover, Journal, Profile or Ask Ray keep the bottom nav, so the Home tab
+ * takes us back from them.
+ */
 export async function goHome(): Promise<void> {
 	await dismissFinishProfilePrompt();
+	await closeOverlays();
 	if (await titleScreen.backButton.isDisplayed()) {
 		await titleScreen.goBack();
 	}

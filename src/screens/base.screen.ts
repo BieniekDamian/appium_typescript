@@ -38,6 +38,14 @@ export abstract class BaseScreen {
 	}
 
 	/**
+	 * A button whose text STARTS WITH the prefix. For buttons that pack a title and a description
+	 * into one label, e.g. Settings' "Account Name, birthday, e-mail and sign-in".
+	 */
+	protected byButtonStartsWith(prefix: string) {
+		return $(`android=new UiSelector().className("android.widget.Button").textStartsWith("${prefix}")`);
+	}
+
+	/**
 	 * A toggle (on/off) button by its text, e.g. the "Watched" button or a Library filter chip.
 	 * It exposes its state as the `checked` attribute, so tests can read it. Narrowed by class
 	 * because the same word also appears in plain text ("Watched." / "It's in Watched...").
