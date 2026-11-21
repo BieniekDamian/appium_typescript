@@ -65,6 +65,17 @@ npx wdio run ./config/wdio.android.conf.ts --spec ./tests/<flow>.spec.ts
 ```
 On failure, look at `artifacts/<suite> - <test>.png` first. For deeper problems use the `debug-test-failure` skill. Run the spec **twice in a row**, since the second run catches state left over from the first. Finish with `npm test` so other specs still pass.
 
-## 7. Report
+## 7. Update docs/test-coverage.md
 
-Tell the user which screens and tests were added, what each test checks, and any element that had no usable locator (with the suggested `aria-label`/`id` fix in the web app repo).
+`docs/test-coverage.md` is the record of what is automated and what is still to do. Update it in the **same change** as the test, never "later":
+
+- **Automated:** add one row per new `it` (spec file, test name, kind: read-only / data + cleanup / device, backlog ID). Changed or removed tests: edit or delete their rows.
+- **To do:** remove the backlog item the test now covers (its ID stays in the Automated rows). If the test only covers part of it, keep the item and narrow its scenario.
+- New ideas, blockers and missing locators found while writing the test go into **To do** (with a new ID, a status and a note) or **Known gaps**. Statuses: ready / blocked / needs approval.
+- Update the "Last updated" line: date, number of spec files, number of tests.
+
+Before adding a test, also read this file: pick the next item from **To do**, and don't duplicate a test that already exists.
+
+## 8. Report
+
+Tell the user which screens and tests were added, what each test checks, any element that had no usable locator (with the suggested `aria-label`/`id` fix in the web app repo), and what changed in `docs/test-coverage.md`.

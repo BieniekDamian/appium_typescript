@@ -41,6 +41,7 @@ src/screens/*.ts             one screen object per screen, exported as a singlet
 src/utils/context.ts         NATIVE_APP <-> WEBVIEW switching
 tests/*.spec.ts              specs, which talk only to screen objects
 tools/dump-screen.spec.ts    `npm run dump` helper, not a test
+docs/test-coverage.md        what is automated and what is still to do; update it with every test change
 ```
 
 ## Locator rules
@@ -52,7 +53,7 @@ How web attributes show up in the native tree, in order of preference:
 3. Visible text → `text` → `this.byText('Library sections')`. Some `aria-label`s also land in `text`, so check the dump.
 
 - **The same `aria-label` can land in `text` OR in `content-desc`**, and this changed between sessions (2026-11-11 → 11-12, after an emulator restart; cause unknown, maybe a WebView update). Icon-only buttons and tabs (`Go back`, `Close search`, `Notifications`, `Save`...) are `content-desc` → `byA11y`; visible copy (headings, `Trailer`, `Synopsis`, suggestion rows) is `text` → `byText`. If many locators start failing at once, re-dump and re-check the attribute before touching test logic.
-- **Some labelled containers lost their label** and have no locator now: the Share button on a title page (only an unstable `radix-_r_*` id), the "In your library" radio group, Library's "sections"/"type" groups. Don't use generated ids; suggest adding a stable `aria-label`/`id` in the web app repo.
+- **Some labelled containers lost their label** and have no locator now: the "In your library" radio group, Library's "sections"/"type" groups. Don't use generated ids; suggest adding a stable `aria-label`/`id` in the web app repo.
 - `click()` does **not** wait for the element to exist, and after the page changes the WebView tree can keep the old state (even 15 s) until something refreshes it. For "disappears" or "appears, then click" use `waitUntilTree()` in `BaseScreen` (it calls `getPageSource()` on every poll). Methods that change state (`close()`, `clear()`) wait for their result themselves.
 - `data-testid` is **not** visible in the native tree. `byTestId()` only works in the WEBVIEW context.
 - Text depends on the app language (EN/PL). Keep all strings inside screen objects, never in specs.
@@ -80,7 +81,7 @@ How web attributes show up in the native tree, in order of preference:
 
 ## Skills
 
-- `add-screen-test`: automate a new screen or flow (dump → screen object → spec → run).
+- `add-screen-test`: automate a new screen or flow (dump → screen object → spec → run → update `docs/test-coverage.md`).
 - `debug-test-failure`: a test fails or a session won't start.
 - `emulator-doctor`: the emulator is slow, crashing, offline, or shows "isn't responding".
 - `run-tests`: run smoke, then the full scope in the background, and report with failures triaged.
