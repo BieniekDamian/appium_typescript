@@ -46,6 +46,18 @@ export abstract class BaseScreen {
 	}
 
 	/**
+	 * A toggle found NEXT TO another toggle (same parent): `fromParent` searches the anchor's siblings.
+	 * For a label that exists twice in the tree with identical attributes, where only the neighbour
+	 * tells them apart. E.g. a title page opened from Library is drawn ON TOP of Library, so the tree
+	 * holds Library's "Not for me" filter chip AND the page's "Not for me" button; only the page's one
+	 * sits beside "Watched".
+	 */
+	protected byToggleBeside(anchorText: string, text: string) {
+		const toggle = 'new UiSelector().className("android.widget.ToggleButton")';
+		return $(`android=${toggle}.text("${anchorText}").fromParent(${toggle}.text("${text}"))`);
+	}
+
+	/**
 	 * A toggle (on/off) button by its text, e.g. the "Watched" button or a Library filter chip.
 	 * It exposes its state as the `checked` attribute, so tests can read it. Narrowed by class
 	 * because the same word also appears in plain text ("Watched." / "It's in Watched...").

@@ -89,8 +89,10 @@ class TitleScreen extends BaseScreen {
 		);
 	}
 
+	// Anchored to its neighbour "Watched": opened from Library, this page is drawn over Library, whose
+	// "Not for me" filter chip stays in the tree with identical attributes (seen 2026-11-21).
 	get notForMeOption() {
-		return this.byToggle('Not for me');
+		return this.byToggleBeside('Watched', 'Not for me');
 	}
 
 	// --- Ray's "is it for me" question plus a "Check" button ---
@@ -280,12 +282,20 @@ class TitleScreen extends BaseScreen {
 	}
 
 	/**
-	 * Waits for Back, then taps it. Right after a dialog closes (e.g. the rating dialog), the
-	 * page behind it is briefly hidden from the accessibility tree, so Back is not there yet.
+	 * Waits for Back, taps it, then waits until the page is really gone.
+	 * - Before the tap: right after a dialog closes (e.g. the rating dialog), the page behind it is
+	 *   briefly hidden from the accessibility tree, so Back is not there yet.
+	 * - After the tap: a page opened from Library lies ON TOP of Library, and for a moment the tree
+	 *   still holds both layers (two nav bars). Touching the nav bar then fails in strict mode, so
+	 *   we only return once the page's own Back button has left the tree.
 	 */
 	async goBack(): Promise<void> {
 		await this.waitUntilTree(async () => this.backButton.isDisplayed(), 'Back button not found');
 		await this.backButton.click();
+		await this.waitUntilTree(
+			async () => !(await this.backButton.isDisplayed()),
+			'Still on the title page after tapping Back',
+		);
 	}
 
 	/** Waits for an element that exists only on a details page (not on Home, whose tree may linger). */

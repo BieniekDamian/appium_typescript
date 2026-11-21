@@ -34,6 +34,7 @@ Collect evidence first, then match it to a known cause. Don't change a locator o
 | Screenshot shows PL texts | App language switched to Polish | Text locators are EN; switch the app back to EN, or add the PL variant inside the screen object |
 | Screenshot shows "<app> isn't responding" | ANR, usually emulator under-resourced | Use the `emulator-doctor` skill |
 | Notifications dialog or "enable notifications" sheet over the screen | Permission not granted (new emulator/app data) | Check the `before` hook in `config/wdio.android.conf.ts` ran; `adb shell pm grant <package> android.permission.POST_NOTIFICATIONS` |
+| `strict mode violation ... resolved to 2 elements` for `~Home` or a toggle, right after opening a title from Library | The title page is drawn over Library; both are in the tree (see CLAUDE.md) | Anchor the locator to a neighbour only that page has; go back with the page's Back before touching the nav bar |
 | Works alone, fails in `npm test` | State left by another spec (screen, saved data) | Make `beforeEach` reset to a known screen; clean up created data |
 | Slow, random timeouts | Software rendering or low RAM | `emulator-doctor` skill |
 | `No WEBVIEW context` | Store build has WebView debugging off. Expected, not a bug | Native-tree locators only (see CLAUDE.md) |

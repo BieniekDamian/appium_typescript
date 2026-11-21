@@ -22,8 +22,12 @@ async function dismissFinishProfilePrompt(): Promise<void> {
 	await driver.waitUntil(
 		async () => {
 			await driver.getPageSource();
+			// The title page's Back is checked BEFORE the nav bar on purpose: a title page opened
+			// from Library is drawn over Library, so the tree then holds TWO nav bars and `~Home`
+			// fails in strict mode. `||` stops at the first true, so Home is never asked then.
 			return (
 				(await finishProfileScreen.lookAroundButton.isDisplayed()) ||
+				(await titleScreen.backButton.isDisplayed()) ||
 				(await navBar.tab('Home').isDisplayed()) ||
 				(await searchScreen.closeButton.isDisplayed()) ||
 				(await notificationsScreen.closeButton.isDisplayed())
