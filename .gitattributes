@@ -1,0 +1,3 @@
+# Store text files with LF line endings in the repo and check them out with LF on every OS
+# (Biome's formatter also writes LF). Without this, Git on Windows converts LF <-> CRLF and warns.
+* text=auto eol=lf
